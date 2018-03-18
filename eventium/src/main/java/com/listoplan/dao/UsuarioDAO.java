@@ -2,6 +2,7 @@ package com.listoplan.dao;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 
 import com.listoplan.models.Usuario;
 import com.listoplan.mysqlcontroller.MysqlManager;
@@ -12,7 +13,7 @@ public class UsuarioDAO {
 
 	public static Token loginUsuario(String email, String contrasena) {
 		String sql=String.format("SELECT id_usuario, nombre, apellido FROM listoplan.usuarios " + 
-				"WHERE EMAIL='%s' " + 
+				"WHERE EMAIL='%s' AND ACTIVO=1 " + 
 				"AND CONTRASENA =SHA2(CONCAT(SALT,'%s'),256);",email, contrasena);
 		ResultSet rs = MysqlManager.getInstance().query(sql);
 		try {
@@ -58,23 +59,44 @@ public class UsuarioDAO {
 	
 	public static Usuario getUsuarioPorId(int idUsuario) {
 		String sql=String.format("SELECT email, nombre, apellido FROM listoplan.usuarios " + 
-				"WHERE id_usuario=%s;",idUsuario);
+				"WHERE activo=1 AND id_usuario=%s;",idUsuario);
 		ResultSet rs = MysqlManager.getInstance().query(sql);
 		try {
-			if(rs.next()) {
+			while(rs.next()) {
 				String email=rs.getString("email");
 				String nombre=rs.getString("nombre");
 				String apellido=rs.getString("apellido");
 				Usuario usuario= new Usuario(idUsuario,email,nombre,apellido);
 				return usuario;
-				
-			} else {
-				return null;
+			} 
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return null;
+		}
+		return null;
+	}
+	
+	public static ArrayList<Usuario> buscarUsuarios(String filtro) {
+		ArrayList<Usuario> usuarios= new ArrayList<Usuario>();
+		String sql=String.format("select id_usuario, email, nombre, apellido  from usuarios " + 
+				"where (LOWER(email) like '%%%s%%' " + 
+				"OR LOWER(CONCAT(nombre,apellido)) like '%%%s%%') AND activo=1;",filtro.toLowerCase(), filtro.toLowerCase());
+		ResultSet rs = MysqlManager.getInstance().query(sql);
+		try {
+			while(rs.next()) {
+				int idUsuario=rs.getInt("id_usuario");
+				String email=rs.getString("email");
+				String nombre=rs.getString("nombre");
+				String apellido=rs.getString("apellido");
+				Usuario usuario= new Usuario(idUsuario,nombre,apellido,email);
+				usuarios.add(usuario);	
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
 			return null;
 		}
+		return usuarios;
 	}
+	
 	
 }

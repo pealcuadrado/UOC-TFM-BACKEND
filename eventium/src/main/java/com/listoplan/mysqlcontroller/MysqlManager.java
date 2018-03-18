@@ -12,6 +12,8 @@ import java.sql.Connection;
 
 
 public class MysqlManager {
+
+	
 	private Connection connection;
 	private static MysqlManager mysqlManager=null;
 	

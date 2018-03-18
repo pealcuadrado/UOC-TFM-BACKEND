@@ -1,5 +1,6 @@
 package com.listoplan.controllers;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -11,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.listoplan.dao.UsuarioDAO;
@@ -56,14 +58,24 @@ public class UsuariosController {
     }
     
     @RequestMapping(value="/usuario/{idUsuario}", method=RequestMethod.GET)
-    public ResponseEntity<Usuario> informacionUsuario(@PathVariable int idUsuario, @RequestHeader String token){
-    	if(TokenUtils.validarToken(token)==null) return new ResponseEntity<Usuario>(HttpStatus.UNAUTHORIZED);
-    	Usuario usuario= UsuarioDAO.getUsuarioPorId(idUsuario);
-    	if(usuario==null) {
-    		return new ResponseEntity<Usuario>(HttpStatus.BAD_REQUEST);
-    	}else {
-    		return new ResponseEntity<Usuario>(usuario,HttpStatus.OK);
-    	}
-    		
+	    public ResponseEntity<Usuario> informacionUsuario(@PathVariable int idUsuario, @RequestHeader String token){
+	    	if(TokenUtils.validarToken(token)==null) return new ResponseEntity<Usuario>(HttpStatus.UNAUTHORIZED);
+	    	Usuario usuario= UsuarioDAO.getUsuarioPorId(idUsuario);
+	    	if(usuario==null) {
+	    		return new ResponseEntity<Usuario>(HttpStatus.BAD_REQUEST);
+	    	}else {
+	    		return new ResponseEntity<Usuario>(usuario,HttpStatus.OK);
+	    	}
+    }
+    
+    @RequestMapping(value="/usuario/buscar_usuario", method=RequestMethod.GET)
+    public ResponseEntity<ArrayList<Usuario>> buscarUsuario(@RequestParam String filtro, @RequestHeader String token){
+	    	if(TokenUtils.validarToken(token)==null) return new ResponseEntity<ArrayList<Usuario>>(HttpStatus.UNAUTHORIZED);
+	    	ArrayList<Usuario> usuarios= UsuarioDAO.buscarUsuarios(filtro);
+	    	if(usuarios==null) {
+	    		return new ResponseEntity<ArrayList<Usuario>>(HttpStatus.BAD_REQUEST);
+	    	}else {
+	    		return new ResponseEntity<ArrayList<Usuario>>(usuarios,HttpStatus.OK);
+	    	}
     }
 }
