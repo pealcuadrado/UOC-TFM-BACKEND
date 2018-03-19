@@ -1,9 +1,15 @@
 package com.listoplan.dao;
 
 import java.sql.ResultSet;
+
 import java.sql.SQLException;
 
+import com.listoplan.models.Nota;
 import com.listoplan.mysqlcontroller.MysqlManager;
+
+import java.sql.Date;
+import java.sql.Time;
+import java.util.ArrayList;
 
 
 public class NotaDAO {
@@ -85,5 +91,80 @@ public class NotaDAO {
 			return false;
 		}
 	}
+	
+	public static Nota getNotaPorId(int idNota) {
+		String sql=String.format("select titulo,contenido,fecha_modificacion from notas " + 
+				"where activo=1 and id_nota=%s;",idNota);
+		ResultSet rs = MysqlManager.getInstance().query(sql);
+		try {
+			if(rs.next()) {
+				String titulo=rs.getString("titulo");
+				String contenido=rs.getString("contenido");
+				Date fecha=rs.getDate("fecha_modificacion");
+				Time hora=rs.getTime("fecha_modificacion");
+				Nota nota= new Nota(idNota, titulo, contenido, fecha, hora);
+				return nota;
+				
+			} else {
+				return null;
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return null;
+		}
+	}
+	
+	public static ArrayList<Nota> getNotasUsuario(int idUsuario) {
+		ArrayList<Nota> notas= new ArrayList<Nota>();
+		//No se retorna todo el contenido de la nota, solo los primeros 20 carácteres
+		String sql=String.format("select id_nota, titulo, if(length(contenido) > 20 " + 
+				", concat(substr(contenido,1,20),'...'), substr(contenido,1,20)) " + 
+				"as contenido, fecha_modificacion from usuario_notas un " + 
+				"join notas n on n.id_nota=un.fk_id_nota " + 
+				"where activo=1 and fk_id_usuario=%s;",idUsuario);
+		ResultSet rs = MysqlManager.getInstance().query(sql);
+		try {
+			while(rs.next()) {
+				int idNota=rs.getInt("id_nota");
+				String titulo=rs.getString("titulo");
+				String contenido=rs.getString("contenido");
+				Date fecha=rs.getDate("fecha_modificacion");
+				Time hora=rs.getTime("fecha_modificacion");
+				Nota nota= new Nota(idNota, titulo, contenido, fecha, hora);
+				notas.add(nota);
+				
+			} 
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return null;
+		}
+		return notas;
+	}
 
+	public static ArrayList<Nota> getNotasGrupo(int idGrupo) {
+		ArrayList<Nota> notas= new ArrayList<Nota>();
+		//No se retorna todo el contenido de la nota, solo los primeros 20 carácteres
+		String sql=String.format("select id_nota, titulo, if(length(contenido) > 20 " + 
+				", concat(substr(contenido,1,20),'...'), substr(contenido,1,20)) " + 
+				"as contenido, fecha_modificacion from grupo_notas gn " + 
+				"join notas n on n.id_nota=gn.fk_id_nota " + 
+				"where activo=1 and fk_id_grupo=%s;",idGrupo);
+		ResultSet rs = MysqlManager.getInstance().query(sql);
+		try {
+			while(rs.next()) {
+				int idNota=rs.getInt("id_nota");
+				String titulo=rs.getString("titulo");
+				String contenido=rs.getString("contenido");
+				Date fecha=rs.getDate("fecha_modificacion");
+				Time hora=rs.getTime("fecha_modificacion");
+				Nota nota= new Nota(idNota, titulo, contenido, fecha, hora);
+				notas.add(nota);
+				
+			} 
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return null;
+		}
+		return notas;
+	}
 }

@@ -1,5 +1,6 @@
 package com.listoplan.controllers;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -7,6 +8,7 @@ import org.springframework.boot.json.JsonParser;
 import org.springframework.boot.json.JsonParserFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -18,6 +20,7 @@ import com.listoplan.dao.NotaDAO;
 import com.listoplan.dao.NotaDAO.AmbitoNota;
 import com.listoplan.jwt.InfoSesion;
 import com.listoplan.jwt.TokenUtils;
+import com.listoplan.models.Nota;
 
 @RestController
 public class NotasController {
@@ -145,6 +148,49 @@ public class NotasController {
     			return new ResponseEntity<HashMap<String,String>>(respuesta, HttpStatus.OK);
     		}
     }
+    
+    @RequestMapping(value="/nota/usuario/{idNota}", method= RequestMethod.GET)
+    public ResponseEntity<Nota> detalleNotaUsuario(@PathVariable String idNota, @RequestHeader String token) {
+    		InfoSesion is=TokenUtils.validarToken(token);
+    		if(is==null) return new ResponseEntity<Nota>(HttpStatus.UNAUTHORIZED);
+    		if(!NotaDAO.esPropietarioNota(is.getIdUsuario(),Integer.parseInt(idNota),AmbitoNota.USUARIO)){
+    			return new ResponseEntity<Nota>(HttpStatus.UNAUTHORIZED);
+    		}
+    		Nota nota= NotaDAO.getNotaPorId(Integer.parseInt(idNota));
+    		return new ResponseEntity<Nota>(nota, HttpStatus.OK);
+    }
+    
+    @RequestMapping(value="/nota/grupo/{idNota}", method= RequestMethod.GET)
+    public ResponseEntity<Nota> detalleNotaGrupo(@PathVariable String idNota, @RequestHeader String token) {
+    		InfoSesion is=TokenUtils.validarToken(token);
+    		if(is==null) return new ResponseEntity<Nota>(HttpStatus.UNAUTHORIZED);
+    		if(!NotaDAO.esPropietarioNota(is.getIdUsuario(),Integer.parseInt(idNota),AmbitoNota.GRUPO)){
+    			return new ResponseEntity<Nota>(HttpStatus.UNAUTHORIZED);
+    		}
+    		Nota nota= NotaDAO.getNotaPorId(Integer.parseInt(idNota));
+    		return new ResponseEntity<Nota>(nota, HttpStatus.OK);
+    }
+    
+    @RequestMapping(value="/nota/notas_usuario", method= RequestMethod.GET)
+    public ResponseEntity<ArrayList<Nota>> notasUsuario(@RequestHeader String token) {
+    		InfoSesion is=TokenUtils.validarToken(token);
+    		if(is==null) return new ResponseEntity<ArrayList<Nota>>(HttpStatus.UNAUTHORIZED);
+    		ArrayList<Nota> notas= NotaDAO.getNotasUsuario(is.getIdUsuario());
+    		return new ResponseEntity<ArrayList<Nota>>(notas, HttpStatus.OK);
+    }
+    
+    @RequestMapping(value="/nota/notas_grupo/{idGrupo}", method= RequestMethod.GET)
+    public ResponseEntity<ArrayList<Nota>> notasGrupo(@PathVariable String idGrupo, @RequestHeader String token) {
+    		InfoSesion is=TokenUtils.validarToken(token);
+    		if(is==null) return new ResponseEntity<ArrayList<Nota>>(HttpStatus.UNAUTHORIZED);
+    		if(!GrupoDAO.esMiembroGrupo(is.getIdUsuario(),Integer.parseInt(idGrupo))){
+    			return new ResponseEntity<ArrayList<Nota>>(HttpStatus.UNAUTHORIZED);
+    		}
+    		ArrayList<Nota> notas= NotaDAO.getNotasGrupo(Integer.parseInt(idGrupo));
+    		return new ResponseEntity<ArrayList<Nota>>(notas, HttpStatus.OK);
+    }
+    
+    
 
 
 }
