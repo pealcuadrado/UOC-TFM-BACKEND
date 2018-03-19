@@ -7,6 +7,7 @@ import org.springframework.context.annotation.ComponentScan;
 import com.listoplan.controllers.GruposController;
 import com.listoplan.controllers.NotasController;
 import com.listoplan.controllers.UsuariosController;
+import com.listoplan.mysqlcontroller.MysqlManager;
 import com.listoplan.utils.Statics;
 
 @SpringBootApplication
@@ -17,6 +18,7 @@ public class App {
 
     public static void main(String[] args) {
     		Statics.configFile=args[0];
+    		MysqlManager.getInstance().connect();
         SpringApplication.run(App.class, args);
     }
 }

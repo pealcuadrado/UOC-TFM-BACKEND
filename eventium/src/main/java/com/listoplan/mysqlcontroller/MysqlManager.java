@@ -45,14 +45,23 @@ public class MysqlManager {
 		}
 	}
 	
-	public Connection getConnection(){
+	private Connection getConnection(){
+		try {
+			if(this.connection.isClosed()|| !this.connection.isValid(10)) {
+				// reconnect
+				this.connect();
+			};
+		} catch (SQLException e) {
+			// reconnect
+			this.connect();
+		}
 		return this.connection;
 	}
 	
 	public ResultSet query(String sql){
 		ResultSet rs;
 		try {
-			Statement statement= this.connection.createStatement();
+			Statement statement= this.getConnection().createStatement();
 			rs= statement.executeQuery(sql);
 		} catch (SQLException e) {
 			rs=null;
@@ -64,7 +73,7 @@ public class MysqlManager {
 	
 	public void execute(String sql){
 		try {
-			PreparedStatement statement= this.connection.prepareStatement(sql);
+			PreparedStatement statement= this.getConnection().prepareStatement(sql);
 			statement.execute();
 		} catch (SQLException e) {
 			System.out.println("Error ejecutando consulta en BDD");
