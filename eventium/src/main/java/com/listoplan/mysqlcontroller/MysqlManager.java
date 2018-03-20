@@ -58,27 +58,16 @@ public class MysqlManager {
 		return this.connection;
 	}
 	
-	public ResultSet query(String sql){
+	public ResultSet query(String sql) throws SQLException{
 		ResultSet rs;
-		try {
-			Statement statement= this.getConnection().createStatement();
-			rs= statement.executeQuery(sql);
-		} catch (SQLException e) {
-			rs=null;
-			System.out.println("Error ejecutando consulta en BDD");
-			e.printStackTrace();
-		}
+		Statement statement= this.getConnection().createStatement();
+		rs= statement.executeQuery(sql);
 		return rs;
 	}
 	
-	public void execute(String sql){
-		try {
-			PreparedStatement statement= this.getConnection().prepareStatement(sql);
-			statement.execute();
-		} catch (SQLException e) {
-			System.out.println("Error ejecutando consulta en BDD");
-			e.printStackTrace();
-		}
+	public void execute(String sql) throws SQLException{
+		PreparedStatement statement= this.getConnection().prepareStatement(sql);
+		statement.execute();
 	}
 	
 	public void quit(){

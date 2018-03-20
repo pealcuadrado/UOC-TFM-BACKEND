@@ -15,8 +15,8 @@ public class UsuarioDAO {
 		String sql=String.format("SELECT id_usuario, nombre, apellido FROM listoplan.usuarios " + 
 				"WHERE EMAIL='%s' AND ACTIVO=1 " + 
 				"AND CONTRASENA =SHA2(CONCAT(SALT,'%s'),256);",email, contrasena);
-		ResultSet rs = MysqlManager.getInstance().query(sql);
 		try {
+			ResultSet rs = MysqlManager.getInstance().query(sql);
 			if(rs.next()) {
 				int idUsuario=rs.getInt("id_usuario");
 				String nombre=rs.getString("nombre");
@@ -37,8 +37,8 @@ public class UsuarioDAO {
 		String status;
 		//Comprobar que el usuario no existe
 		String sql=String.format("SELECT count(*) as num FROM listoplan.usuarios WHERE email='%s';",email);
-		ResultSet rs= MysqlManager.getInstance().query(sql);
 		try {
+			ResultSet rs= MysqlManager.getInstance().query(sql);
 			rs.next();
 			if(rs.getInt("num") > 0) {
 				status= "Error: El usuario ya existe";
@@ -60,8 +60,8 @@ public class UsuarioDAO {
 	public static Usuario getUsuarioPorId(int idUsuario) {
 		String sql=String.format("SELECT email, nombre, apellido FROM listoplan.usuarios " + 
 				"WHERE activo=1 AND id_usuario=%s;",idUsuario);
-		ResultSet rs = MysqlManager.getInstance().query(sql);
 		try {
+			ResultSet rs = MysqlManager.getInstance().query(sql);
 			while(rs.next()) {
 				String email=rs.getString("email");
 				String nombre=rs.getString("nombre");
@@ -81,8 +81,8 @@ public class UsuarioDAO {
 		String sql=String.format("select id_usuario, email, nombre, apellido  from usuarios " + 
 				"where (LOWER(email) like '%%%s%%' " + 
 				"OR LOWER(CONCAT(nombre,apellido)) like '%%%s%%') AND activo=1;",filtro.toLowerCase(), filtro.toLowerCase());
-		ResultSet rs = MysqlManager.getInstance().query(sql);
 		try {
+			ResultSet rs = MysqlManager.getInstance().query(sql);
 			while(rs.next()) {
 				int idUsuario=rs.getInt("id_usuario");
 				String email=rs.getString("email");

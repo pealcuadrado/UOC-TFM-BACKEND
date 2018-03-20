@@ -75,8 +75,8 @@ public class NotaDAO {
 		else {
 			return false;
 		}
-		ResultSet rs = MysqlManager.getInstance().query(sql);
 		try {
+			ResultSet rs = MysqlManager.getInstance().query(sql);
 			if(rs.next()) {
 				if(rs.getInt("num") > 0) {
 					return true;
@@ -95,8 +95,8 @@ public class NotaDAO {
 	public static Nota getNotaPorId(int idNota) {
 		String sql=String.format("select titulo,contenido,fecha_modificacion from notas " + 
 				"where activo=1 and id_nota=%s;",idNota);
-		ResultSet rs = MysqlManager.getInstance().query(sql);
 		try {
+			ResultSet rs = MysqlManager.getInstance().query(sql);
 			if(rs.next()) {
 				String titulo=rs.getString("titulo");
 				String contenido=rs.getString("contenido");
@@ -122,8 +122,8 @@ public class NotaDAO {
 				"as contenido, fecha_modificacion from usuario_notas un " + 
 				"join notas n on n.id_nota=un.fk_id_nota " + 
 				"where activo=1 and fk_id_usuario=%s;",idUsuario);
-		ResultSet rs = MysqlManager.getInstance().query(sql);
 		try {
+			ResultSet rs = MysqlManager.getInstance().query(sql);
 			while(rs.next()) {
 				int idNota=rs.getInt("id_nota");
 				String titulo=rs.getString("titulo");
@@ -149,8 +149,8 @@ public class NotaDAO {
 				"as contenido, fecha_modificacion from grupo_notas gn " + 
 				"join notas n on n.id_nota=gn.fk_id_nota " + 
 				"where activo=1 and fk_id_grupo=%s;",idGrupo);
-		ResultSet rs = MysqlManager.getInstance().query(sql);
 		try {
+			ResultSet rs = MysqlManager.getInstance().query(sql);
 			while(rs.next()) {
 				int idNota=rs.getInt("id_nota");
 				String titulo=rs.getString("titulo");

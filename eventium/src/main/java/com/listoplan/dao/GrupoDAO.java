@@ -85,8 +85,8 @@ public class GrupoDAO {
 				"		WHERE FK_ID_USUARIO='%s' " + 
 				"		AND FK_ID_USUARIO='%s' " + 
 				"		AND ADMINISTRADOR=1;",idUsuario, idGrupo);
-		ResultSet rs = MysqlManager.getInstance().query(sql);
 		try {
+			ResultSet rs = MysqlManager.getInstance().query(sql);
 			if(rs.next()) {
 				if(rs.getInt("num") > 0) {
 					return true;
@@ -106,8 +106,8 @@ public class GrupoDAO {
 		String sql=String.format("		select count(*) as num from usuarios_grupos " + 
 				"		WHERE FK_ID_USUARIO='%s' " + 
 				"		AND FK_ID_USUARIO='%s' ",idUsuario, idGrupo);
-		ResultSet rs = MysqlManager.getInstance().query(sql);
 		try {
+			ResultSet rs = MysqlManager.getInstance().query(sql);
 			if(rs.next()) {
 				if(rs.getInt("num") > 0) {
 					return true;
@@ -126,8 +126,8 @@ public class GrupoDAO {
 	public static Grupo getGrupoPorId(int idGrupo) {
 		String sql=String.format("SELECT nombre FROM listoplan.grupos " + 
 				"WHERE activo=1 and id_grupo=%s;",idGrupo);
-		ResultSet rs = MysqlManager.getInstance().query(sql);
 		try {
+			ResultSet rs = MysqlManager.getInstance().query(sql);
 			if(rs.next()) {
 				String nombre=rs.getString("nombre");
 				Grupo grupo= new Grupo(idGrupo,nombre);
@@ -148,8 +148,8 @@ public class GrupoDAO {
 				"join grupos g on g.id_grupo=ug.fk_id_grupo " + 
 				"where activo=1 " + 
 				"and fk_id_usuario=%s;",idUsuario);
-		ResultSet rs = MysqlManager.getInstance().query(sql);
 		try {
+			ResultSet rs = MysqlManager.getInstance().query(sql);
 			while(rs.next()) {
 				int id_grupo=rs.getInt("id_grupo");
 				String nombre=rs.getString("nombre");
@@ -170,8 +170,8 @@ public class GrupoDAO {
 				"join usuarios u on u.id_usuario=ug.fk_id_usuario " + 
 				"where activo=1 " + 
 				"and fk_id_grupo=%s",idGrupo);
-		ResultSet rs = MysqlManager.getInstance().query(sql);
 		try {
+			ResultSet rs = MysqlManager.getInstance().query(sql);
 			while(rs.next()) {
 				int id_usuario=rs.getInt("id_usuario");
 				String email=rs.getString("email");
