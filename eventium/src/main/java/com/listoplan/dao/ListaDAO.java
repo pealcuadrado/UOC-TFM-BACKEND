@@ -104,4 +104,46 @@ public class ListaDAO {
 			return false;
 		}
 	}
+	
+	public static String crearItem(int idLista, String nombre, String valor, int orden) {
+		String status;
+		String sql=String.format("CALL listas_crear_item('%s','%s','%s','%s');", idLista,nombre,valor,orden);
+		try {
+			MysqlManager.getInstance().execute(sql);
+			status="El item se ha creado correctamente";
+		}
+		catch(Exception e) {
+			e.printStackTrace();
+			status="Error: Se ha producido un error al crear el item";
+		}
+		return status;
+	}
+	
+	public static String modificarItem(int idItem, int idLista, String nombre, String valor, int orden) {
+		String status;
+		String sql=String.format("CALL listas_modificar_item('%s','%s','%s','%s','%s');",idItem, idLista,nombre,valor,orden);
+		try {
+			MysqlManager.getInstance().execute(sql);
+			status="El item se ha modificado correctamente";
+		}
+		catch(Exception e) {
+			e.printStackTrace();
+			status="Error: Se ha producido un error al modificar el item";
+		}
+		return status;
+	}
+	
+	public static String eliminarItem(int idItem, int idLista) {
+		String status;
+		String sql=String.format("CALL listas_eliminar_item('%s','%s');",idItem, idLista);
+		try {
+			MysqlManager.getInstance().execute(sql);
+			status="El item se ha eliminado correctamente";
+		}
+		catch(Exception e) {
+			e.printStackTrace();
+			status="Error: Se ha producido un error al eliminar el item";
+		}
+		return status;
+	}
 }

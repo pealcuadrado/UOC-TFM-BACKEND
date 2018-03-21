@@ -35,7 +35,7 @@ public class NotasController {
     		String contenido=(String) resultado.get("contenido");
     		String ambito=((String) resultado.get("ambito")).toUpperCase();
     		if(ambito.equals("GRUPO") && !GrupoDAO.esMiembroGrupo(is.getIdUsuario(), Integer.parseInt(idRequest))){
-    			return new ResponseEntity<HashMap<String,String>>(HttpStatus.UNAUTHORIZED);
+    			return new ResponseEntity<HashMap<String,String>>(HttpStatus.FORBIDDEN);
     		}
     		AmbitoNota an;
     		int id;
@@ -94,7 +94,7 @@ public class NotasController {
     			return new ResponseEntity<HashMap<String,String>>(res,HttpStatus.BAD_REQUEST);
     		}
     		if(!NotaDAO.esPropietarioNota(id,idNota,an)){
-    			return new ResponseEntity<HashMap<String,String>>(HttpStatus.UNAUTHORIZED);
+    			return new ResponseEntity<HashMap<String,String>>(HttpStatus.FORBIDDEN);
     		}
     		String status= NotaDAO.modificarNota(idNota, titulo, contenido);
     		HashMap<String, String> respuesta = new HashMap<String,String>();
@@ -134,7 +134,7 @@ public class NotasController {
     			return new ResponseEntity<HashMap<String,String>>(res,HttpStatus.BAD_REQUEST);
     		}
     		if(!NotaDAO.esPropietarioNota(id,idNota,an)){
-    			return new ResponseEntity<HashMap<String,String>>(HttpStatus.UNAUTHORIZED);
+    			return new ResponseEntity<HashMap<String,String>>(HttpStatus.FORBIDDEN);
     		}
     		String status= NotaDAO.desactivarNota(idNota);
     		HashMap<String, String> respuesta = new HashMap<String,String>();
@@ -154,7 +154,7 @@ public class NotasController {
     		InfoSesion is=TokenUtils.validarToken(token);
     		if(is==null) return new ResponseEntity<Nota>(HttpStatus.UNAUTHORIZED);
     		if(!NotaDAO.esPropietarioNota(is.getIdUsuario(),Integer.parseInt(idNota),AmbitoNota.USUARIO)){
-    			return new ResponseEntity<Nota>(HttpStatus.UNAUTHORIZED);
+    			return new ResponseEntity<Nota>(HttpStatus.FORBIDDEN);
     		}
     		Nota nota= NotaDAO.getNotaPorId(Integer.parseInt(idNota));
     		return new ResponseEntity<Nota>(nota, HttpStatus.OK);
@@ -165,7 +165,7 @@ public class NotasController {
     		InfoSesion is=TokenUtils.validarToken(token);
     		if(is==null) return new ResponseEntity<Nota>(HttpStatus.UNAUTHORIZED);
     		if(!NotaDAO.esPropietarioNota(is.getIdUsuario(),Integer.parseInt(idNota),AmbitoNota.GRUPO)){
-    			return new ResponseEntity<Nota>(HttpStatus.UNAUTHORIZED);
+    			return new ResponseEntity<Nota>(HttpStatus.FORBIDDEN);
     		}
     		Nota nota= NotaDAO.getNotaPorId(Integer.parseInt(idNota));
     		return new ResponseEntity<Nota>(nota, HttpStatus.OK);
@@ -184,7 +184,7 @@ public class NotasController {
     		InfoSesion is=TokenUtils.validarToken(token);
     		if(is==null) return new ResponseEntity<ArrayList<Nota>>(HttpStatus.UNAUTHORIZED);
     		if(!GrupoDAO.esMiembroGrupo(is.getIdUsuario(),Integer.parseInt(idGrupo))){
-    			return new ResponseEntity<ArrayList<Nota>>(HttpStatus.UNAUTHORIZED);
+    			return new ResponseEntity<ArrayList<Nota>>(HttpStatus.FORBIDDEN);
     		}
     		ArrayList<Nota> notas= NotaDAO.getNotasGrupo(Integer.parseInt(idGrupo));
     		return new ResponseEntity<ArrayList<Nota>>(notas, HttpStatus.OK);

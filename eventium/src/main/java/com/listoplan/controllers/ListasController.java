@@ -34,7 +34,7 @@ public class ListasController {
     		String tipoLista= (String) resultado.get("tipoLista");
     		String ambito=((String) resultado.get("ambito")).toUpperCase();
     		if(ambito.equals("GRUPO") && !GrupoDAO.esMiembroGrupo(is.getIdUsuario(), Integer.parseInt(idRequest))){
-    			return new ResponseEntity<HashMap<String,String>>(HttpStatus.UNAUTHORIZED);
+    			return new ResponseEntity<HashMap<String,String>>(HttpStatus.FORBIDDEN);
     		}
     		AmbitoLista an;
     		TipoLista tl;
@@ -101,7 +101,7 @@ public class ListasController {
     			return new ResponseEntity<HashMap<String,String>>(res,HttpStatus.BAD_REQUEST);
     		}
     		if(!ListaDAO.esPropietarioLista(id,idLista,an)){
-    			return new ResponseEntity<HashMap<String,String>>(HttpStatus.UNAUTHORIZED);
+    			return new ResponseEntity<HashMap<String,String>>(HttpStatus.FORBIDDEN);
     		}
     		String status= ListaDAO.modificarLista(idLista, nombre, descripcion);
     		HashMap<String, String> respuesta = new HashMap<String,String>();
@@ -141,9 +141,149 @@ public class ListasController {
     			return new ResponseEntity<HashMap<String,String>>(res,HttpStatus.BAD_REQUEST);
     		}
     		if(!ListaDAO.esPropietarioLista(id,idLista,an)){
-    			return new ResponseEntity<HashMap<String,String>>(HttpStatus.UNAUTHORIZED);
+    			return new ResponseEntity<HashMap<String,String>>(HttpStatus.FORBIDDEN);
     		}
     		String status= ListaDAO.desactivarLista(idLista);
+    		HashMap<String, String> respuesta = new HashMap<String,String>();
+    		if(status.contains("Error")){
+    			respuesta.put("status", status);
+    			respuesta.put("resultado", "KO");
+    			return new ResponseEntity<HashMap<String,String>>(respuesta, HttpStatus.INTERNAL_SERVER_ERROR);
+    		}else {
+       		respuesta.put("status", status);
+    			respuesta.put("resultado", "OK");
+    			return new ResponseEntity<HashMap<String,String>>(respuesta, HttpStatus.OK);
+    		}
+    }
+    
+    @RequestMapping(value="/listas/nuevo_item", method= RequestMethod.POST)
+    public ResponseEntity<HashMap<String,String>> nuevoItem(@RequestBody String data, @RequestHeader String token) {
+    		InfoSesion is=TokenUtils.validarToken(token);
+    		if(is==null) return new ResponseEntity<HashMap<String,String>>(HttpStatus.UNAUTHORIZED);
+    		JsonParser jp = JsonParserFactory.getJsonParser();
+    		Map<String, Object> resultado = jp.parseMap(data);
+    		String idRequest=(String) resultado.get("id");
+    		int idLista=Integer.parseInt((String) resultado.get("idLista"));
+    		String nombre=(String) resultado.get("nombre");
+    		String valor=(String) resultado.get("valor");
+    		int orden= Integer.parseInt((String) resultado.get("orden"));
+    		String ambito=((String) resultado.get("ambito")).toUpperCase();
+    		if(ambito.equals("GRUPO") && !GrupoDAO.esMiembroGrupo(is.getIdUsuario(), Integer.parseInt(idRequest))){
+    			return new ResponseEntity<HashMap<String,String>>(HttpStatus.FORBIDDEN);
+    		}
+    		AmbitoLista an;
+    		int id;
+    		if(ambito.equals("GRUPO")){
+    			an=AmbitoLista.GRUPO;
+    			id=Integer.parseInt(idRequest);
+    		}
+    		else if (ambito.equals("USUARIO")) {
+    			an=AmbitoLista.USUARIO;
+    			id=is.getIdUsuario();
+    		}
+    		else {
+    			HashMap<String,String> res = new HashMap<String,String>();
+    			res.put("status","Ámbito no válido, debe ser USUARIO o GRUPO");
+    			res.put("resultado","KO");
+    			return new ResponseEntity<HashMap<String,String>>(res,HttpStatus.BAD_REQUEST);
+    		}
+    		if(!ListaDAO.esPropietarioLista(id,idLista,an)){
+    			return new ResponseEntity<HashMap<String,String>>(HttpStatus.FORBIDDEN);
+    		}
+    		String status= ListaDAO.crearItem(idLista, nombre, valor, orden);
+    		HashMap<String, String> respuesta = new HashMap<String,String>();
+    		if(status.contains("Error")){
+    			respuesta.put("status", status);
+    			respuesta.put("resultado", "KO");
+    			return new ResponseEntity<HashMap<String,String>>(respuesta, HttpStatus.INTERNAL_SERVER_ERROR);
+    		}else {
+       		respuesta.put("status", status);
+    			respuesta.put("resultado", "OK");
+    			return new ResponseEntity<HashMap<String,String>>(respuesta, HttpStatus.OK);
+    		}
+    }
+    
+    @RequestMapping(value="/listas/modificar_item", method= RequestMethod.POST)
+    public ResponseEntity<HashMap<String,String>> modificarItem(@RequestBody String data, @RequestHeader String token) {
+    		InfoSesion is=TokenUtils.validarToken(token);
+    		if(is==null) return new ResponseEntity<HashMap<String,String>>(HttpStatus.UNAUTHORIZED);
+    		JsonParser jp = JsonParserFactory.getJsonParser();
+    		Map<String, Object> resultado = jp.parseMap(data);
+    		String idRequest=(String) resultado.get("id");
+    		int idItem=Integer.parseInt((String) resultado.get("idItem"));
+    		int idLista=Integer.parseInt((String) resultado.get("idLista"));
+    		String nombre=(String) resultado.get("nombre");
+    		String valor=(String) resultado.get("valor");
+    		int orden= Integer.parseInt((String) resultado.get("orden"));
+    		String ambito=((String) resultado.get("ambito")).toUpperCase();
+    		if(ambito.equals("GRUPO") && !GrupoDAO.esMiembroGrupo(is.getIdUsuario(), Integer.parseInt(idRequest))){
+    			return new ResponseEntity<HashMap<String,String>>(HttpStatus.FORBIDDEN);
+    		}
+    		AmbitoLista an;
+    		int id;
+    		if(ambito.equals("GRUPO")){
+    			an=AmbitoLista.GRUPO;
+    			id=Integer.parseInt(idRequest);
+    		}
+    		else if (ambito.equals("USUARIO")) {
+    			an=AmbitoLista.USUARIO;
+    			id=is.getIdUsuario();
+    		}
+    		else {
+    			HashMap<String,String> res = new HashMap<String,String>();
+    			res.put("status","Ámbito no válido, debe ser USUARIO o GRUPO");
+    			res.put("resultado","KO");
+    			return new ResponseEntity<HashMap<String,String>>(res,HttpStatus.BAD_REQUEST);
+    		}
+    		if(!ListaDAO.esPropietarioLista(id,idLista,an)){
+    			return new ResponseEntity<HashMap<String,String>>(HttpStatus.FORBIDDEN);
+    		}
+    		String status= ListaDAO.modificarItem(idItem, idLista, nombre, valor, orden);
+    		HashMap<String, String> respuesta = new HashMap<String,String>();
+    		if(status.contains("Error")){
+    			respuesta.put("status", status);
+    			respuesta.put("resultado", "KO");
+    			return new ResponseEntity<HashMap<String,String>>(respuesta, HttpStatus.INTERNAL_SERVER_ERROR);
+    		}else {
+       		respuesta.put("status", status);
+    			respuesta.put("resultado", "OK");
+    			return new ResponseEntity<HashMap<String,String>>(respuesta, HttpStatus.OK);
+    		}
+    }
+    
+    @RequestMapping(value="/listas/eliminar_item", method= RequestMethod.POST)
+    public ResponseEntity<HashMap<String,String>> eliminarItem(@RequestBody String data, @RequestHeader String token) {
+    		InfoSesion is=TokenUtils.validarToken(token);
+    		if(is==null) return new ResponseEntity<HashMap<String,String>>(HttpStatus.UNAUTHORIZED);
+    		JsonParser jp = JsonParserFactory.getJsonParser();
+    		Map<String, Object> resultado = jp.parseMap(data);
+    		String idRequest=(String) resultado.get("id");
+    		int idItem=Integer.parseInt((String) resultado.get("idItem"));
+    		int idLista=Integer.parseInt((String) resultado.get("idLista"));
+    		String ambito=((String) resultado.get("ambito")).toUpperCase();
+    		if(ambito.equals("GRUPO") && !GrupoDAO.esMiembroGrupo(is.getIdUsuario(), Integer.parseInt(idRequest))){
+    			return new ResponseEntity<HashMap<String,String>>(HttpStatus.FORBIDDEN);
+    		}
+    		AmbitoLista an;
+    		int id;
+    		if(ambito.equals("GRUPO")){
+    			an=AmbitoLista.GRUPO;
+    			id=Integer.parseInt(idRequest);
+    		}
+    		else if (ambito.equals("USUARIO")) {
+    			an=AmbitoLista.USUARIO;
+    			id=is.getIdUsuario();
+    		}
+    		else {
+    			HashMap<String,String> res = new HashMap<String,String>();
+    			res.put("status","Ámbito no válido, debe ser USUARIO o GRUPO");
+    			res.put("resultado","KO");
+    			return new ResponseEntity<HashMap<String,String>>(res,HttpStatus.BAD_REQUEST);
+    		}
+    		if(!ListaDAO.esPropietarioLista(id,idLista,an)){
+    			return new ResponseEntity<HashMap<String,String>>(HttpStatus.FORBIDDEN);
+    		}
+    		String status= ListaDAO.eliminarItem(idItem, idLista);
     		HashMap<String, String> respuesta = new HashMap<String,String>();
     		if(status.contains("Error")){
     			respuesta.put("status", status);

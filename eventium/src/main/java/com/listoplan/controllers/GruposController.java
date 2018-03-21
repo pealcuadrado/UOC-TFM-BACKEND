@@ -49,7 +49,7 @@ public class GruposController {
     		JsonParser jp = JsonParserFactory.getJsonParser();
     		Map<String, Object> resultado = jp.parseMap(data);
     		if(!GrupoDAO.esAdminGrupo(is.getIdUsuario(), Integer.parseInt((String) resultado.get("idGrupo")))){
-    			return new ResponseEntity<HashMap<String,String>>(HttpStatus.UNAUTHORIZED);
+    			return new ResponseEntity<HashMap<String,String>>(HttpStatus.FORBIDDEN);
     		}
     		String status= GrupoDAO.modificarGrupo(is.getIdUsuario(), Integer.parseInt((String) resultado.get("idGrupo")),(String) resultado.get("nombreGrupo"));
     		HashMap<String, String> respuesta = new HashMap<String,String>();
@@ -71,7 +71,7 @@ public class GruposController {
     		JsonParser jp = JsonParserFactory.getJsonParser();
     		Map<String, Object> resultado = jp.parseMap(data);
     		if(!GrupoDAO.esAdminGrupo(is.getIdUsuario(), Integer.parseInt((String) resultado.get("idGrupo")))){
-    			return new ResponseEntity<HashMap<String,String>>(HttpStatus.UNAUTHORIZED);
+    			return new ResponseEntity<HashMap<String,String>>(HttpStatus.FORBIDDEN);
     		}
     		String status= GrupoDAO.desactivarGrupo(is.getIdUsuario(), Integer.parseInt((String) resultado.get("idGrupo")));
     		HashMap<String, String> respuesta = new HashMap<String,String>();
@@ -93,7 +93,7 @@ public class GruposController {
     		JsonParser jp = JsonParserFactory.getJsonParser();
     		Map<String, Object> resultado = jp.parseMap(data);
     		if(!GrupoDAO.esAdminGrupo(is.getIdUsuario(), Integer.parseInt((String) resultado.get("idGrupo")))){
-    			return new ResponseEntity<HashMap<String,String>>(HttpStatus.UNAUTHORIZED);
+    			return new ResponseEntity<HashMap<String,String>>(HttpStatus.FORBIDDEN);
     		}
     		String status= GrupoDAO.vincularUsuarioAGrupo(is.getIdUsuario(), Integer.parseInt((String) resultado.get("idGrupo")),
     				Integer.parseInt((String) resultado.get("idUsuario")),Integer.parseInt((String) resultado.get("esAdministrador")));
@@ -116,7 +116,7 @@ public class GruposController {
     		JsonParser jp = JsonParserFactory.getJsonParser();
     		Map<String, Object> resultado = jp.parseMap(data);
     		if(!GrupoDAO.esAdminGrupo(is.getIdUsuario(), Integer.parseInt((String) resultado.get("idGrupo")))){
-    			return new ResponseEntity<HashMap<String,String>>(HttpStatus.UNAUTHORIZED);
+    			return new ResponseEntity<HashMap<String,String>>(HttpStatus.FORBIDDEN);
     		}
     		String status= GrupoDAO.desvincularUsuarioDeGrupo(is.getIdUsuario(), Integer.parseInt((String) resultado.get("idGrupo")),
     				Integer.parseInt((String) resultado.get("idUsuario")));
