@@ -39,7 +39,7 @@ public class UsuariosController {
     		}
     }
     
-    @RequestMapping(value="/nuevo_usuario", method= RequestMethod.POST)
+    @RequestMapping(value="/usuarios/nuevo_usuario", method= RequestMethod.POST)
     public ResponseEntity<HashMap<String,String>> nuevoUsuario(@RequestBody String data) {
     		JsonParser jp = JsonParserFactory.getJsonParser();
     		Map<String, Object> resultado = jp.parseMap(data);
@@ -57,7 +57,7 @@ public class UsuariosController {
     		}
     }
     
-    @RequestMapping(value="/usuario/{idUsuario}", method=RequestMethod.GET)
+    @RequestMapping(value="/usuarios/informacion_usuario/{idUsuario}", method=RequestMethod.GET)
 	    public ResponseEntity<Usuario> informacionUsuario(@PathVariable int idUsuario, @RequestHeader String token){
 	    	if(TokenUtils.validarToken(token)==null) return new ResponseEntity<Usuario>(HttpStatus.UNAUTHORIZED);
 	    	Usuario usuario= UsuarioDAO.getUsuarioPorId(idUsuario);
@@ -68,7 +68,7 @@ public class UsuariosController {
 	    	}
     }
     
-    @RequestMapping(value="/usuario/buscar_usuario", method=RequestMethod.GET)
+    @RequestMapping(value="/usuarios/busqueda_usuario", method=RequestMethod.GET)
     public ResponseEntity<ArrayList<Usuario>> buscarUsuario(@RequestParam String filtro, @RequestHeader String token){
 	    	if(TokenUtils.validarToken(token)==null) return new ResponseEntity<ArrayList<Usuario>>(HttpStatus.UNAUTHORIZED);
 	    	ArrayList<Usuario> usuarios= UsuarioDAO.buscarUsuarios(filtro);

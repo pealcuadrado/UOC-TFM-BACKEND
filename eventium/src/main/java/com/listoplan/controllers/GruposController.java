@@ -23,7 +23,7 @@ import com.listoplan.models.Usuario;
 
 @RestController
 public class GruposController {
-    @RequestMapping(value="/nuevo_grupo", method= RequestMethod.POST)
+    @RequestMapping(value="/grupos/nuevo_grupo", method= RequestMethod.POST)
     public ResponseEntity<HashMap<String,String>> nuevoGrupo(@RequestBody String data, @RequestHeader String token) {
     		InfoSesion is=TokenUtils.validarToken(token);
     		if(is==null) return new ResponseEntity<HashMap<String,String>>(HttpStatus.UNAUTHORIZED);
@@ -42,7 +42,7 @@ public class GruposController {
     		}
     }
     
-    @RequestMapping(value="/modificar_grupo", method= RequestMethod.POST)
+    @RequestMapping(value="/grupos/modificacion_grupo", method= RequestMethod.POST)
     public ResponseEntity<HashMap<String,String>> modificarGrupo(@RequestBody String data, @RequestHeader String token) {
     		InfoSesion is=TokenUtils.validarToken(token);
     		if(is==null) return new ResponseEntity<HashMap<String,String>>(HttpStatus.UNAUTHORIZED);
@@ -64,7 +64,7 @@ public class GruposController {
     		}
     }
     
-    @RequestMapping(value="/desactivar_grupo", method= RequestMethod.POST)
+    @RequestMapping(value="/grupos/desactivacion_grupo", method= RequestMethod.POST)
     public ResponseEntity<HashMap<String,String>> desactivarGrupo(@RequestBody String data, @RequestHeader String token) {
     		InfoSesion is=TokenUtils.validarToken(token);
     		if(is==null) return new ResponseEntity<HashMap<String,String>>(HttpStatus.UNAUTHORIZED);
@@ -86,7 +86,7 @@ public class GruposController {
     		}
     }
     
-    @RequestMapping(value="/vincular_usuario_grupo", method= RequestMethod.POST)
+    @RequestMapping(value="/grupos/vinculacion_usuario_grupo", method= RequestMethod.POST)
     public ResponseEntity<HashMap<String,String>> vincularUsuarioGrupo(@RequestBody String data, @RequestHeader String token) {
     		InfoSesion is=TokenUtils.validarToken(token);
     		if(is==null) return new ResponseEntity<HashMap<String,String>>(HttpStatus.UNAUTHORIZED);
@@ -109,7 +109,7 @@ public class GruposController {
     		}
     }
     
-    @RequestMapping(value="/desvincular_usuario_grupo", method= RequestMethod.POST)
+    @RequestMapping(value="/grupos/desvinculacion_usuario_grupo", method= RequestMethod.POST)
     public ResponseEntity<HashMap<String,String>> desvincularUsuarioGrupo(@RequestBody String data, @RequestHeader String token) {
     		InfoSesion is=TokenUtils.validarToken(token);
     		if(is==null) return new ResponseEntity<HashMap<String,String>>(HttpStatus.UNAUTHORIZED);
@@ -132,7 +132,7 @@ public class GruposController {
     		}
     }
     
-    @RequestMapping(value="/grupo/{idGrupo}", method=RequestMethod.GET)
+    @RequestMapping(value="/grupos/informacion_grupo/{idGrupo}", method=RequestMethod.GET)
 	    public ResponseEntity<Grupo> informacionGrupo(@PathVariable int idGrupo, @RequestHeader String token){
 	    	if(TokenUtils.validarToken(token)==null) return new ResponseEntity<Grupo>(HttpStatus.UNAUTHORIZED);
 	    	Grupo grupo= GrupoDAO.getGrupoPorId(idGrupo);
@@ -143,7 +143,7 @@ public class GruposController {
 	    	}
     }
     
-    @RequestMapping(value="/grupo/grupos_usuario/{idUsuario}", method=RequestMethod.GET)
+    @RequestMapping(value="/grupos/grupos_usuario/{idUsuario}", method=RequestMethod.GET)
 	    public ResponseEntity<ArrayList<Grupo>> gruposUsuario(@PathVariable int idUsuario, @RequestHeader String token){
 	    	if(TokenUtils.validarToken(token)==null) return new ResponseEntity<ArrayList<Grupo>>(HttpStatus.UNAUTHORIZED);
 	    	ArrayList<Grupo> grupos= GrupoDAO.getGruposUsuario(idUsuario);
@@ -154,7 +154,7 @@ public class GruposController {
 	    	}
     	}
     
-    @RequestMapping(value="/grupo/usuarios_grupo/{idGrupo}", method=RequestMethod.GET)
+    @RequestMapping(value="/grupos/usuarios_grupo/{idGrupo}", method=RequestMethod.GET)
     public ResponseEntity<ArrayList<Usuario>> usuariosGrupo(@PathVariable int idGrupo, @RequestHeader String token){
     	if(TokenUtils.validarToken(token)==null) return new ResponseEntity<ArrayList<Usuario>>(HttpStatus.UNAUTHORIZED);
     	ArrayList<Usuario> usuarios= GrupoDAO.getUsuariosGrupo(idGrupo);

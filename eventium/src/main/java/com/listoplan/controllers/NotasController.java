@@ -24,7 +24,7 @@ import com.listoplan.models.Nota;
 
 @RestController
 public class NotasController {
-    @RequestMapping(value="/nueva_nota", method= RequestMethod.POST)
+    @RequestMapping(value="/notas/nueva_nota", method= RequestMethod.POST)
     public ResponseEntity<HashMap<String,String>> nuevaNota(@RequestBody String data, @RequestHeader String token) {
     		InfoSesion is=TokenUtils.validarToken(token);
     		if(is==null) return new ResponseEntity<HashMap<String,String>>(HttpStatus.UNAUTHORIZED);
@@ -66,7 +66,7 @@ public class NotasController {
     		}
     }
     
-    @RequestMapping(value="/modificar_nota", method= RequestMethod.POST)
+    @RequestMapping(value="/notas/modificacion_nota", method= RequestMethod.POST)
     public ResponseEntity<HashMap<String,String>> modificarNota(@RequestBody String data, @RequestHeader String token) {
     		InfoSesion is=TokenUtils.validarToken(token);
     		if(is==null) return new ResponseEntity<HashMap<String,String>>(HttpStatus.UNAUTHORIZED);
@@ -108,7 +108,7 @@ public class NotasController {
     			return new ResponseEntity<HashMap<String,String>>(respuesta, HttpStatus.OK);
     		}
     }
-    @RequestMapping(value="/desactivar_nota", method= RequestMethod.POST)
+    @RequestMapping(value="/notas/desactivacion_nota", method= RequestMethod.POST)
     public ResponseEntity<HashMap<String,String>> desactivarNota(@RequestBody String data, @RequestHeader String token) {
     		InfoSesion is=TokenUtils.validarToken(token);
     		if(is==null) return new ResponseEntity<HashMap<String,String>>(HttpStatus.UNAUTHORIZED);
@@ -149,7 +149,7 @@ public class NotasController {
     		}
     }
     
-    @RequestMapping(value="/nota/usuario/{idNota}", method= RequestMethod.GET)
+    @RequestMapping(value="/notas/detalle_nota_usuario/{idNota}", method= RequestMethod.GET)
     public ResponseEntity<Nota> detalleNotaUsuario(@PathVariable String idNota, @RequestHeader String token) {
     		InfoSesion is=TokenUtils.validarToken(token);
     		if(is==null) return new ResponseEntity<Nota>(HttpStatus.UNAUTHORIZED);
@@ -160,7 +160,7 @@ public class NotasController {
     		return new ResponseEntity<Nota>(nota, HttpStatus.OK);
     }
     
-    @RequestMapping(value="/nota/grupo/{idNota}", method= RequestMethod.GET)
+    @RequestMapping(value="/notas/detalle_nota_grupo/{idNota}", method= RequestMethod.GET)
     public ResponseEntity<Nota> detalleNotaGrupo(@PathVariable String idNota, @RequestHeader String token) {
     		InfoSesion is=TokenUtils.validarToken(token);
     		if(is==null) return new ResponseEntity<Nota>(HttpStatus.UNAUTHORIZED);
@@ -171,7 +171,7 @@ public class NotasController {
     		return new ResponseEntity<Nota>(nota, HttpStatus.OK);
     }
     
-    @RequestMapping(value="/nota/notas_usuario", method= RequestMethod.GET)
+    @RequestMapping(value="/notas/notas_usuario", method= RequestMethod.GET)
     public ResponseEntity<ArrayList<Nota>> notasUsuario(@RequestHeader String token) {
     		InfoSesion is=TokenUtils.validarToken(token);
     		if(is==null) return new ResponseEntity<ArrayList<Nota>>(HttpStatus.UNAUTHORIZED);
@@ -179,7 +179,7 @@ public class NotasController {
     		return new ResponseEntity<ArrayList<Nota>>(notas, HttpStatus.OK);
     }
     
-    @RequestMapping(value="/nota/notas_grupo/{idGrupo}", method= RequestMethod.GET)
+    @RequestMapping(value="/notas/notas_grupo/{idGrupo}", method= RequestMethod.GET)
     public ResponseEntity<ArrayList<Nota>> notasGrupo(@PathVariable String idGrupo, @RequestHeader String token) {
     		InfoSesion is=TokenUtils.validarToken(token);
     		if(is==null) return new ResponseEntity<ArrayList<Nota>>(HttpStatus.UNAUTHORIZED);

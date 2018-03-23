@@ -1,5 +1,7 @@
 package com.listoplan.main;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.ComponentScan;
@@ -19,6 +21,8 @@ import com.listoplan.utils.Statics;
 public class App {
 
     public static void main(String[] args) {
+    		Logger logger = LoggerFactory.getLogger(App.class);
+    		logger.trace("Aplicación arrancada");
     		Statics.configFile=args[0];
     		MysqlManager.getInstance().connect();
         SpringApplication.run(App.class, args);
