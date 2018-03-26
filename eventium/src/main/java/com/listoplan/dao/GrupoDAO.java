@@ -4,12 +4,14 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
+import org.apache.log4j.Logger;
+
 import com.listoplan.models.Grupo;
 import com.listoplan.models.Usuario;
 import com.listoplan.mysqlcontroller.MysqlManager;
 
 public class GrupoDAO {
-	
+	private static Logger logger=Logger.getLogger(GrupoDAO.class);
 	public static String crearGrupo(int idUsuario, String nombreGrupo) {
 		String status;
 		String sql=String.format("CALL grupos_crear('%s','%s');", idUsuario,nombreGrupo);
@@ -18,7 +20,7 @@ public class GrupoDAO {
 			status="El grupo se ha creado correctamente";
 		}
 		catch(Exception e) {
-			e.printStackTrace();
+			logger.error("Error: ",e);
 			status="Error: Se ha producido un error al crear el grupo";
 		}
 		return status;
@@ -32,7 +34,7 @@ public class GrupoDAO {
 			status="El grupo se ha modificado correctamente";
 		}
 		catch(Exception e) {
-			e.printStackTrace();
+			logger.error("Error: ",e);
 			status="Error: Se ha producido un error al modificar el grupo";
 		}
 		return status;
@@ -46,7 +48,7 @@ public class GrupoDAO {
 			status="El grupo se ha desactivado correctamente";
 		}
 		catch(Exception e) {
-			e.printStackTrace();
+			logger.error("Error: ",e);
 			status="Error: Se ha producido un error al desactivar el grupo";
 		}
 		return status;
@@ -60,7 +62,7 @@ public class GrupoDAO {
 			status="El usuario ha sido vinculado correctamente";
 		}
 		catch(Exception e) {
-			e.printStackTrace();
+			logger.error("Error: ",e);
 			status="Error: Se ha producido un error al vincular el usuario";
 		}
 		return status;
@@ -74,7 +76,7 @@ public class GrupoDAO {
 			status="El usuario ha sido desvinculado correctamente";
 		}
 		catch(Exception e) {
-			e.printStackTrace();
+			logger.error("Error: ",e);
 			status="Error: Se ha producido un error al desvincular el usuario";
 		}
 		return status;
@@ -97,7 +99,7 @@ public class GrupoDAO {
 				return false;
 			}
 		} catch (SQLException e) {
-			e.printStackTrace();
+			logger.error("Error: ",e);
 			return false;
 		}
 	}
@@ -118,7 +120,7 @@ public class GrupoDAO {
 				return false;
 			}
 		} catch (SQLException e) {
-			e.printStackTrace();
+			logger.error("Error: ",e);
 			return false;
 		}
 	}
@@ -137,7 +139,7 @@ public class GrupoDAO {
 				return null;
 			}
 		} catch (SQLException e) {
-			e.printStackTrace();
+			logger.error("Error: ",e);
 			return null;
 		}
 	}
@@ -158,7 +160,7 @@ public class GrupoDAO {
 				
 			} 
 		} catch (SQLException e) {
-			e.printStackTrace();
+			logger.error("Error: ",e);
 			return null;
 		}
 		return listadoGrupos;
@@ -182,7 +184,7 @@ public class GrupoDAO {
 				
 			} 
 		} catch (SQLException e) {
-			e.printStackTrace();
+			logger.error("Error: ",e);
 			return null;
 		}
 		return listadoUsuarios;

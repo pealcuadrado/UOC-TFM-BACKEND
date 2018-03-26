@@ -6,6 +6,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
+import org.apache.log4j.Logger;
+
 import com.listoplan.utils.ConfigurationManager;
 
 import java.sql.Connection;
@@ -13,12 +15,14 @@ import java.sql.Connection;
 
 public class MysqlManager {
 
+	Logger logger;
 	
 	private Connection connection;
 	private static MysqlManager mysqlManager=null;
 	
 	private MysqlManager(){
 		if(this.connection==null){
+			logger=Logger.getLogger(MysqlManager.class);
 			this.connect();
 		}
 	};
@@ -37,22 +41,22 @@ public class MysqlManager {
 		try{
 			Class.forName("com.mysql.jdbc.Driver");
 			this.connection = DriverManager.getConnection(uri, user, password);
-		    System.out.println("Database connected!");
+		    logger.info("Conexión a la BBDD realizada correctamente");
 		} catch (SQLException e) {
-		    throw new IllegalStateException("No ha sido posible conectar con la Base de Datos MySQL", e);
+		    logger.error("No ha sido posible conectar con la Base de Datos MySQL", e);
 		} catch (ClassNotFoundException e) {
-			throw new IllegalStateException("No se puede encontrar el controlador MySQL",e);
+			logger.error("No se puede encontrar el controlador MySQL",e);
 		}
 	}
 	
 	private Connection getConnection(){
 		try {
 			if(this.connection.isClosed()|| !this.connection.isValid(10)) {
-				// reconnect
+				logger.warn("Conexión con la BBDD perdida. Intentando reconectar...");
 				this.connect();
 			};
 		} catch (SQLException e) {
-			// reconnect
+			logger.warn("Conexión con la BBDD perdida. Intentando reconectar...");
 			this.connect();
 		}
 		return this.connection;
@@ -73,7 +77,7 @@ public class MysqlManager {
 	public void quit(){
 		try {
 			this.connection.close();
-			System.out.println("Desconexion realizada con exito");
+			logger.info("Desconexion realizada con exito");
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}

@@ -11,8 +11,11 @@ import java.sql.Date;
 import java.sql.Time;
 import java.util.ArrayList;
 
+import org.apache.log4j.Logger;
+
 
 public class NotaDAO {
+	private static Logger logger= Logger.getLogger(NotaDAO.class);
 	public enum AmbitoNota {USUARIO,GRUPO};
 	
 	public static String crearNota(int id, String titulo, String contenido, AmbitoNota ambitoNota) {
@@ -26,7 +29,7 @@ public class NotaDAO {
 			status="La nota se ha creado correctamente";
 		}
 		catch(Exception e) {
-			e.printStackTrace();
+			logger.error("Error: ",e);
 			status="Error: Se ha producido un error al crear la nota";
 		}
 		return status;
@@ -40,7 +43,7 @@ public class NotaDAO {
 			status="La nota se ha modificado correctamente";
 		}
 		catch(Exception e) {
-			e.printStackTrace();
+			logger.error("Error: ",e);
 			status="Error: Se ha producido un error al modificar la nota";
 		}
 		return status;
@@ -54,7 +57,7 @@ public class NotaDAO {
 			status="La nota se ha desactivado correctamente";
 		}
 		catch(Exception e) {
-			e.printStackTrace();
+			logger.error("Error: ",e);
 			status="Error: Se ha producido un error al desactivar la nota";
 		}
 		return status;
@@ -87,7 +90,7 @@ public class NotaDAO {
 				return false;
 			}
 		} catch (SQLException e) {
-			e.printStackTrace();
+			logger.error("Error: ",e);
 			return false;
 		}
 	}
@@ -109,7 +112,7 @@ public class NotaDAO {
 				return null;
 			}
 		} catch (SQLException e) {
-			e.printStackTrace();
+			logger.error("Error: ",e);
 			return null;
 		}
 	}
@@ -135,7 +138,7 @@ public class NotaDAO {
 				
 			} 
 		} catch (SQLException e) {
-			e.printStackTrace();
+			logger.error("Error: ",e);
 			return null;
 		}
 		return notas;
@@ -162,7 +165,7 @@ public class NotaDAO {
 				
 			} 
 		} catch (SQLException e) {
-			e.printStackTrace();
+			logger.error("Error: ",e);
 			return null;
 		}
 		return notas;

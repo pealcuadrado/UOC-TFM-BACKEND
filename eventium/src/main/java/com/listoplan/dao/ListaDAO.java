@@ -6,11 +6,14 @@ import java.sql.SQLException;
 import java.sql.Time;
 import java.util.ArrayList;
 
+import org.apache.log4j.Logger;
+
 import com.listoplan.models.ItemLista;
 import com.listoplan.models.Lista;
 import com.listoplan.mysqlcontroller.MysqlManager;
 
 public class ListaDAO {
+	private static Logger logger= Logger.getLogger(ListaDAO.class);
 	public enum AmbitoLista {USUARIO,GRUPO};
 	public enum TipoLista {ORDENADA,CHECKLIST,REPARTICION};
 	
@@ -44,7 +47,7 @@ public class ListaDAO {
 			status="La lista se ha creado correctamente";
 		}
 		catch(Exception e) {
-			e.printStackTrace();
+			logger.error("Error: ",e);
 			status="Error: Se ha producido un error al crear la lista";
 		}
 		return status;
@@ -58,7 +61,7 @@ public class ListaDAO {
 			status="La lista se ha modificado correctamente";
 		}
 		catch(Exception e) {
-			e.printStackTrace();
+			logger.error("Error: ",e);
 			status="Error: Se ha producido un error al modificar la lista";
 		}
 		return status;
@@ -72,7 +75,7 @@ public class ListaDAO {
 			status="La lista se ha desactivado correctamente";
 		}
 		catch(Exception e) {
-			e.printStackTrace();
+			logger.error("Error: ",e);
 			status="Error: Se ha producido un error al desactivar la lista";
 		}
 		return status;
@@ -105,7 +108,7 @@ public class ListaDAO {
 				return false;
 			}
 		} catch (SQLException e) {
-			e.printStackTrace();
+			logger.error("Error: ",e);
 			return false;
 		}
 	}
@@ -118,7 +121,7 @@ public class ListaDAO {
 			status="El item se ha creado correctamente";
 		}
 		catch(Exception e) {
-			e.printStackTrace();
+			logger.error("Error: ",e);
 			status="Error: Se ha producido un error al crear el item";
 		}
 		return status;
@@ -132,7 +135,7 @@ public class ListaDAO {
 			status="El item se ha modificado correctamente";
 		}
 		catch(Exception e) {
-			e.printStackTrace();
+			logger.error("Error: ",e);
 			status="Error: Se ha producido un error al modificar el item";
 		}
 		return status;
@@ -146,7 +149,7 @@ public class ListaDAO {
 			status="El item se ha eliminado correctamente";
 		}
 		catch(Exception e) {
-			e.printStackTrace();
+			logger.error("Error: ",e);
 			status="Error: Se ha producido un error al eliminar el item";
 		}
 		return status;
@@ -191,7 +194,7 @@ public class ListaDAO {
 				return null;
 			}
 		} catch (SQLException e) {
-			e.printStackTrace();
+			logger.error("Error: ",e);
 			return null;
 		}
 	}
@@ -220,7 +223,7 @@ public class ListaDAO {
 				
 			} 
 		} catch (SQLException e) {
-			e.printStackTrace();
+			logger.error("Error: ",e);
 			return null;
 		}
 		return listas;
@@ -249,7 +252,7 @@ public class ListaDAO {
 				
 			} 
 		} catch (SQLException e) {
-			e.printStackTrace();
+			logger.error("Error: ",e);
 			return null;
 		}
 		return listas;
@@ -263,7 +266,7 @@ public class ListaDAO {
 			status="La visibilidad de la lista se ha modificado correctamente";
 		}
 		catch(Exception e) {
-			e.printStackTrace();
+			logger.error("Error: ",e);
 			status="Error: Se ha producido un error al modificar la visibilidad de la lista";
 		}
 		return status;
@@ -277,7 +280,7 @@ public class ListaDAO {
 			status="La lista se ha copiado correctamente";
 		}
 		catch(Exception e) {
-			e.printStackTrace();
+			logger.error("Error: ",e);
 			status="Error: Se ha producido un error al copiar la lista";
 		}
 		return status;
@@ -298,7 +301,7 @@ public class ListaDAO {
 				return false;
 			}
 		} catch (SQLException e) {
-			e.printStackTrace();
+			logger.error("Error: ",e);
 			return false;
 		}
 	}

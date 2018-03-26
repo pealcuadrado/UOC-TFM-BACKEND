@@ -2,6 +2,8 @@ package com.listoplan.jwt;
 
 import java.util.Date;
 
+import org.apache.log4j.Logger;
+
 import com.listoplan.jwt.Token.EstadoToken;
 import com.listoplan.models.Usuario;
 
@@ -14,6 +16,7 @@ import io.jsonwebtoken.SignatureException;
 
 public class TokenUtils {
 	
+	static Logger logger= Logger.getLogger(TokenUtils.class);
 	//Time-to-live del token en segundos
 	private static final int TTL=604800; //7 dias
 	private static final String SECRET="sjksfdfd345jdij0345kdcv9";
@@ -45,12 +48,15 @@ public class TokenUtils {
 			return new InfoSesion(idUsuario,email,nombre,apellido);
 		}
 		catch(SignatureException e){
+			logger.error("Error de firma token",e);
 			return null;
 		}
 		catch(ExpiredJwtException e){
+			logger.error("Error: token expirado",e);
 			return null;
 		}
 		catch(Exception e) {
+			logger.error("Error: ",e);
 			return null;
 		}
 	}

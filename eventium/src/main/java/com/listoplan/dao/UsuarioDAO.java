@@ -4,6 +4,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
+import org.apache.log4j.Logger;
+
 import com.listoplan.models.Usuario;
 import com.listoplan.mysqlcontroller.MysqlManager;
 import com.listoplan.jwt.Token;
@@ -11,6 +13,7 @@ import com.listoplan.jwt.TokenUtils;
 
 public class UsuarioDAO {
 
+	private static Logger logger= Logger.getLogger(UsuarioDAO.class);
 	public static Token loginUsuario(String email, String contrasena) {
 		String sql=String.format("SELECT id_usuario, nombre, apellido FROM listoplan.usuarios " + 
 				"WHERE EMAIL='%s' AND ACTIVO=1 " + 
@@ -28,7 +31,7 @@ public class UsuarioDAO {
 				return TokenUtils.crearToken(null);
 			}
 		} catch (SQLException e) {
-			e.printStackTrace();
+			logger.error("Error: ",e);
 			return TokenUtils.crearToken(null);
 		}
 	}
@@ -50,7 +53,7 @@ public class UsuarioDAO {
 				status="Usuario creado correctamente";
 			}
 		} catch (SQLException e) {
-			e.printStackTrace();
+			logger.error("Error: ",e);
 			status= "Error: Se ha producido un error al registrar el usuario";
 			
 		}		
@@ -70,7 +73,7 @@ public class UsuarioDAO {
 				return usuario;
 			} 
 		} catch (SQLException e) {
-			e.printStackTrace();
+			logger.error("Error: ",e);
 			return null;
 		}
 		return null;
@@ -92,7 +95,7 @@ public class UsuarioDAO {
 				usuarios.add(usuario);	
 			}
 		} catch (SQLException e) {
-			e.printStackTrace();
+			logger.error("Error: ",e);
 			return null;
 		}
 		return usuarios;
