@@ -8,6 +8,7 @@ import org.springframework.boot.json.JsonParser;
 import org.springframework.boot.json.JsonParserFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
@@ -22,6 +23,7 @@ import com.listoplan.jwt.InfoSesion;
 import com.listoplan.jwt.TokenUtils;
 import com.listoplan.models.Nota;
 
+@CrossOrigin
 @RestController
 public class NotasController {
     @RequestMapping(value="/notas/nueva_nota", method= RequestMethod.POST)

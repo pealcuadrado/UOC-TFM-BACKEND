@@ -7,6 +7,7 @@ import java.util.Map;
 import org.springframework.boot.json.JsonParserFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
@@ -23,12 +24,12 @@ import com.listoplan.models.Usuario;
 
 import org.springframework.boot.json.JsonParser;
 
-
+@CrossOrigin
 @RestController
 public class UsuariosController {
-	
     @RequestMapping(value="/login", method = RequestMethod.POST)
     public ResponseEntity<Token> loginUsuario(@RequestBody String data) {
+    		System.out.println(data);
     		JsonParser jp = JsonParserFactory.getJsonParser();
     		Map<String, Object> resultado = jp.parseMap(data);
     		Token token=UsuarioDAO.loginUsuario((String) resultado.get("email"), (String) resultado.get("contrasena"));
