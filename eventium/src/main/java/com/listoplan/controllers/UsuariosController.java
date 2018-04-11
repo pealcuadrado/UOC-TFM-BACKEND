@@ -29,7 +29,6 @@ import org.springframework.boot.json.JsonParser;
 public class UsuariosController {
     @RequestMapping(value="/login", method = RequestMethod.POST)
     public ResponseEntity<Token> loginUsuario(@RequestBody String data) {
-    		System.out.println(data);
     		JsonParser jp = JsonParserFactory.getJsonParser();
     		Map<String, Object> resultado = jp.parseMap(data);
     		Token token=UsuarioDAO.loginUsuario((String) resultado.get("email"), (String) resultado.get("contrasena"));
@@ -61,6 +60,9 @@ public class UsuariosController {
     @RequestMapping(value="/usuarios/informacion_usuario/{idUsuario}", method=RequestMethod.GET)
 	    public ResponseEntity<Usuario> informacionUsuario(@PathVariable int idUsuario, @RequestHeader String token){
 	    	if(TokenUtils.validarToken(token)==null) return new ResponseEntity<Usuario>(HttpStatus.UNAUTHORIZED);
+	    	if(idUsuario==0) {
+	    		idUsuario=TokenUtils.validarToken(token).getIdUsuario();
+	    	}
 	    	Usuario usuario= UsuarioDAO.getUsuarioPorId(idUsuario);
 	    	if(usuario==null) {
 	    		return new ResponseEntity<Usuario>(HttpStatus.BAD_REQUEST);

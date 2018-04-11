@@ -69,7 +69,7 @@ public class UsuarioDAO {
 				String email=rs.getString("email");
 				String nombre=rs.getString("nombre");
 				String apellido=rs.getString("apellido");
-				Usuario usuario= new Usuario(idUsuario,email,nombre,apellido);
+				Usuario usuario= new Usuario(idUsuario,nombre,apellido,email);
 				return usuario;
 			} 
 		} catch (SQLException e) {
