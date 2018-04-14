@@ -323,14 +323,11 @@ public class ListasController {
     		return new ResponseEntity<Lista>(lista, HttpStatus.OK);
     }
     
-    @RequestMapping(value="/listas/listas_usuario/{idUsuario}", method= RequestMethod.GET)
-    public ResponseEntity<ArrayList<Lista>> listasUsuario(@PathVariable String idUsuario, @RequestHeader String token) {
+    @RequestMapping(value="/listas/listas_usuario/", method= RequestMethod.GET)
+    public ResponseEntity<ArrayList<Lista>> listasUsuario(@RequestHeader String token) {
     		InfoSesion is=TokenUtils.validarToken(token);
     		if(is==null) return new ResponseEntity<ArrayList<Lista>>(HttpStatus.UNAUTHORIZED);
-    		if(!ListaDAO.esPropietarioLista(is.getIdUsuario(),Integer.parseInt(idUsuario),AmbitoLista.USUARIO)){
-    			return new ResponseEntity<ArrayList<Lista>>(HttpStatus.FORBIDDEN);
-    		}
-    		ArrayList<Lista> lista= ListaDAO.getListasUsuario(Integer.parseInt(idUsuario));
+    		ArrayList<Lista> lista= ListaDAO.getListasUsuario(is.getIdUsuario());
     		return new ResponseEntity<ArrayList<Lista>>(lista, HttpStatus.OK);
     }
     

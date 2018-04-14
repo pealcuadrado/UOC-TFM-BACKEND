@@ -121,10 +121,10 @@ public class NotaDAO {
 		ArrayList<Nota> notas= new ArrayList<Nota>();
 		//No se retorna todo el contenido de la nota, solo los primeros 20 carácteres
 		String sql=String.format("select id_nota, titulo, if(length(contenido) > 20 " + 
-				", concat(substr(contenido,1,20),'...'), substr(contenido,1,20)) " + 
+				", concat(substr(contenido,1,100),'...'), substr(contenido,1,100)) " + 
 				"as contenido, fecha_modificacion from usuario_notas un " + 
 				"join notas n on n.id_nota=un.fk_id_nota " + 
-				"where activo=1 and fk_id_usuario=%s;",idUsuario);
+				"where activo=1 and fk_id_usuario=%s order by fecha_modificacion desc;",idUsuario);
 		try {
 			ResultSet rs = MysqlManager.getInstance().query(sql);
 			while(rs.next()) {
