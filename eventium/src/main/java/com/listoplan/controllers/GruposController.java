@@ -145,10 +145,10 @@ public class GruposController {
 	    	}
     }
     
-    @RequestMapping(value="/grupos/grupos_usuario/{idUsuario}", method=RequestMethod.GET)
-	    public ResponseEntity<ArrayList<Grupo>> gruposUsuario(@PathVariable int idUsuario, @RequestHeader String token){
+    @RequestMapping(value="/grupos/grupos_usuario/", method=RequestMethod.GET)
+	    public ResponseEntity<ArrayList<Grupo>> gruposUsuario(@RequestHeader String token){
 	    	if(TokenUtils.validarToken(token)==null) return new ResponseEntity<ArrayList<Grupo>>(HttpStatus.UNAUTHORIZED);
-	    	ArrayList<Grupo> grupos= GrupoDAO.getGruposUsuario(idUsuario);
+	    	ArrayList<Grupo> grupos= GrupoDAO.getGruposUsuario(TokenUtils.validarToken(token).getIdUsuario());
 	    	if(grupos==null) {
 	    		return new ResponseEntity<ArrayList<Grupo>>(HttpStatus.BAD_REQUEST);
 	    	}else {
