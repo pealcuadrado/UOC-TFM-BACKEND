@@ -179,7 +179,7 @@ public class GrupoDAO {
 				String email=rs.getString("email");
 				String nombre=rs.getString("nombre");
 				String apellido=rs.getString("apellido");
-				Usuario usuario= new Usuario(id_usuario,email,nombre,apellido);
+				Usuario usuario= new Usuario(id_usuario,nombre,apellido, email);
 				listadoUsuarios.add(usuario);
 				
 			} 
