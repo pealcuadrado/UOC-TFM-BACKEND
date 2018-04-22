@@ -89,8 +89,10 @@ public class ListaDAO {
 				"		AND FK_ID_LISTA='%s' ",id, idLista);
 		}
 		else if (ambito==AmbitoLista.GRUPO) {
-			sql=String.format("		select count(*) as num from grupo_listas " + 
-					"		WHERE FK_ID_GRUPO='%s' " + 
+			sql=String.format("		select count(*) as num from grupo_listas gl"
+					+"		join usuarios_grupos ug " + 
+					"		on ug.FK_ID_GRUPO =gl.FK_ID_GRUPO" + 
+					"		WHERE FK_ID_USUARIO='%s' " + 
 					"		AND FK_ID_LISTA='%s' ",id, idLista);
 		}
 		else {
@@ -203,9 +205,10 @@ public class ListaDAO {
 		ArrayList<Lista> listas= new ArrayList<Lista>();
 		//No se retorna todo el contenido de la nota, solo los primeros 20 carácteres
 		String sql=String.format("select ID_LISTA, NOMBRE, DESCRIPCION, "
-				+ "fecha_modificacion, compartida " + 
+				+ "fecha_modificacion, compartida, tl.TIPO_LISTA " + 
 				"from usuario_listas ul " + 
 				"join listas l on ul.FK_ID_LISTA=l.ID_LISTA " + 
+				"join tm_tipo_lista tl on tl.id_tipo_lista= l.fk_id_tipo  "+
 				"WHERE activo=1 " + 
 				"AND fk_id_usuario=%s " + 
 				"order by FECHA_MODIFICACION desc;",idUsuario);
@@ -218,7 +221,8 @@ public class ListaDAO {
 				Date fecha=rs.getDate("fecha_modificacion");
 				Time hora=rs.getTime("fecha_modificacion");
 				int compartida=rs.getInt("Compartida");
-				Lista lista= new Lista(idLista, nombre, descripcion, null,fecha, hora,null, compartida);
+				String tipoLista=rs.getString("tipo_lista");
+				Lista lista= new Lista(idLista, nombre, descripcion, tipoLista,fecha, hora,null, compartida);
 				listas.add(lista);
 				
 			} 
@@ -231,23 +235,27 @@ public class ListaDAO {
 	
 	public static ArrayList<Lista> getListasGrupo(int idGrupo) {
 		ArrayList<Lista> listas= new ArrayList<Lista>();
-		String sql=String.format("select ID_LISTA, NOMBRE, DESCRIPCION, "
-				+ "fecha_modificacion, compartida " + 
+		String sql=String.format("select FK_ID_LISTA, l.NOMBRE, DESCRIPCION, l.fecha_modificacion, l.compartida, tl.TIPO_LISTA " + 
 				"from grupo_listas gl " + 
-				"join grupos g on gl.FK_ID_LISTA=g.ID_LISTA " + 
-				"WHERE activo=1 " + 
-				"AND fk_id_grupo=%s " + 
+				"join grupos g " + 
+				"on gl.FK_ID_GRUPO=g.ID_GRUPO " + 
+				"join listas l " + 
+				"on l.id_lista=gl.FK_ID_LISTA " + 
+				"join tm_tipo_lista tl on tl.id_tipo_lista= l.fk_id_tipo  "+
+				"WHERE g.activo=1  " + 
+				"AND l.activo=1 AND fk_id_grupo=%s " + 
 				"order by FECHA_MODIFICACION desc;",idGrupo);
 		try {
 			ResultSet rs = MysqlManager.getInstance().query(sql);
 			while(rs.next()) {
-				int idLista=rs.getInt("id_lista");
+				int idLista=rs.getInt("fk_id_lista");
 				String nombre=rs.getString("nombre");
 				String descripcion=rs.getString("descripcion");
 				Date fecha=rs.getDate("fecha_modificacion");
 				Time hora=rs.getTime("fecha_modificacion");
 				int compartida=rs.getInt("Compartida");
-				Lista lista= new Lista(idLista, nombre, descripcion, null,fecha, hora,null,compartida);
+				String tipoLista=rs.getString("tipo_lista");
+				Lista lista= new Lista(idLista, nombre, descripcion, tipoLista,fecha, hora,null,compartida);
 				listas.add(lista);
 				
 			} 

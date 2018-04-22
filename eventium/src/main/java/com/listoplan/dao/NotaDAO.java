@@ -71,8 +71,10 @@ public class NotaDAO {
 				"		AND FK_ID_NOTA='%s' ",id, idNota);
 		}
 		else if (ambito==AmbitoNota.GRUPO) {
-			sql=String.format("		select count(*) as num from grupo_notas " + 
-					"		WHERE FK_ID_GRUPO='%s' " + 
+			sql=String.format("		select count(*) as num from grupo_notas gn " + 
+					"		join usuarios_grupos ug " + 
+					"		ON ug.FK_ID_GRUPO=gn.FK_ID_GRUPO "+
+					"		WHERE FK_ID_USUARIO='%s' " + 
 					"		AND FK_ID_NOTA='%s' ",id, idNota);
 		}
 		else {
@@ -151,7 +153,7 @@ public class NotaDAO {
 				", concat(substr(contenido,1,20),'...'), substr(contenido,1,20)) " + 
 				"as contenido, fecha_modificacion from grupo_notas gn " + 
 				"join notas n on n.id_nota=gn.fk_id_nota " + 
-				"where activo=1 and fk_id_grupo=%s;",idGrupo);
+				"where activo=1 and fk_id_grupo=%s order by fecha_modificacion desc;",idGrupo);
 		try {
 			ResultSet rs = MysqlManager.getInstance().query(sql);
 			while(rs.next()) {

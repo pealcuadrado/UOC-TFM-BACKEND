@@ -85,7 +85,7 @@ public class GrupoDAO {
 	public static boolean esAdminGrupo(int idUsuario, int idGrupo){
 		String sql=String.format("		select count(*) as num from usuarios_grupos " + 
 				"		WHERE FK_ID_USUARIO='%s' " + 
-				"		AND FK_ID_USUARIO='%s' " + 
+				"		AND FK_ID_GRUPO='%s' " + 
 				"		AND ADMINISTRADOR=1;",idUsuario, idGrupo);
 		try {
 			ResultSet rs = MysqlManager.getInstance().query(sql);
@@ -107,7 +107,7 @@ public class GrupoDAO {
 	public static boolean esMiembroGrupo(int idUsuario, int idGrupo){
 		String sql=String.format("		select count(*) as num from usuarios_grupos " + 
 				"		WHERE FK_ID_USUARIO='%s' " + 
-				"		AND FK_ID_USUARIO='%s' ",idUsuario, idGrupo);
+				"		AND FK_ID_GRUPO='%s' ",idUsuario, idGrupo);
 		try {
 			ResultSet rs = MysqlManager.getInstance().query(sql);
 			if(rs.next()) {

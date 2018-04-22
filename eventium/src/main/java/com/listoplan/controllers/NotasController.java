@@ -74,20 +74,17 @@ public class NotasController {
     		if(is==null) return new ResponseEntity<HashMap<String,String>>(HttpStatus.UNAUTHORIZED);
     		JsonParser jp = JsonParserFactory.getJsonParser();
     		Map<String, Object> resultado = jp.parseMap(data);
-    		int idRequest=Integer.parseInt((String) resultado.get("id"));
     		int idNota=Integer.parseInt((String) resultado.get("idNota"));
     		String titulo=(String) resultado.get("titulo");
     		String contenido=(String) resultado.get("contenido");
     		String ambito=((String) resultado.get("ambito")).toUpperCase();
     		AmbitoNota an;
-    		int id;
+    		int id=is.getIdUsuario();
     		if(ambito.equals("GRUPO")){
     			an=AmbitoNota.GRUPO;
-    			id=idRequest;
     		}
     		else if (ambito.equals("USUARIO")) {
     			an=AmbitoNota.USUARIO;
-    			id=is.getIdUsuario();
     		}
     		else {
     			HashMap<String,String> res = new HashMap<String,String>();
@@ -116,18 +113,15 @@ public class NotasController {
     		if(is==null) return new ResponseEntity<HashMap<String,String>>(HttpStatus.UNAUTHORIZED);
     		JsonParser jp = JsonParserFactory.getJsonParser();
     		Map<String, Object> resultado = jp.parseMap(data);
-    		int idRequest=Integer.parseInt((String) resultado.get("id"));
     		int idNota=Integer.parseInt((String) resultado.get("idNota"));
     		String ambito=((String) resultado.get("ambito")).toUpperCase();
     		AmbitoNota an;
-    		int id;
+    		int id=is.getIdUsuario();;
     		if(ambito.equals("GRUPO")){
     			an=AmbitoNota.GRUPO;
-    			id=idRequest;
     		}
     		else if (ambito.equals("USUARIO")) {
     			an=AmbitoNota.USUARIO;
-    			id=is.getIdUsuario();
     		}
     		else {
     			HashMap<String,String> res = new HashMap<String,String>();

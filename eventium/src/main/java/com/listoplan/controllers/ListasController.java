@@ -43,14 +43,12 @@ public class ListasController {
     		}
     		AmbitoLista an;
     		TipoLista tl;
-    		int id;
+    		int id=is.getIdUsuario();;
     		if(ambito.equals("GRUPO")){
     			an=AmbitoLista.GRUPO;
-    			id=Integer.parseInt(idRequest);
     		}
     		else if (ambito.equals("USUARIO")) {
     			an=AmbitoLista.USUARIO;
-    			id=is.getIdUsuario();
     		}
     		else {
     			HashMap<String,String> res = new HashMap<String,String>();
@@ -84,20 +82,17 @@ public class ListasController {
     		if(is==null) return new ResponseEntity<HashMap<String,String>>(HttpStatus.UNAUTHORIZED);
     		JsonParser jp = JsonParserFactory.getJsonParser();
     		Map<String, Object> resultado = jp.parseMap(data);
-    		int idRequest=Integer.parseInt((String)resultado.get("id"));
     		int idLista=Integer.parseInt((String)resultado.get("idLista"));
     		String nombre=(String) resultado.get("nombre");
     		String descripcion=(String) resultado.get("descripcion");
     		String ambito=((String) resultado.get("ambito")).toUpperCase();
     		AmbitoLista an;
-    		int id;
+    		int id=is.getIdUsuario();;
     		if(ambito.equals("GRUPO")){
     			an=AmbitoLista.GRUPO;
-    			id=idRequest;
     		}
     		else if (ambito.equals("USUARIO")) {
     			an=AmbitoLista.USUARIO;
-    			id=is.getIdUsuario();
     		}
     		else {
     			HashMap<String,String> res = new HashMap<String,String>();
@@ -126,18 +121,15 @@ public class ListasController {
     		if(is==null) return new ResponseEntity<HashMap<String,String>>(HttpStatus.UNAUTHORIZED);
     		JsonParser jp = JsonParserFactory.getJsonParser();
     		Map<String, Object> resultado = jp.parseMap(data);
-    		int idRequest=Integer.parseInt((String) resultado.get("id"));
     		int idLista=Integer.parseInt((String) resultado.get("idLista"));
     		String ambito=((String) resultado.get("ambito")).toUpperCase();
     		AmbitoLista an;
-    		int id;
+    		int id=is.getIdUsuario();
     		if(ambito.equals("GRUPO")){
     			an=AmbitoLista.GRUPO;
-    			id=idRequest;
     		}
     		else if (ambito.equals("USUARIO")) {
     			an=AmbitoLista.USUARIO;
-    			id=is.getIdUsuario();
     		}
     		else {
     			HashMap<String,String> res = new HashMap<String,String>();
@@ -177,14 +169,12 @@ public class ListasController {
     			return new ResponseEntity<HashMap<String,String>>(HttpStatus.FORBIDDEN);
     		}
     		AmbitoLista an;
-    		int id;
+    		int id=is.getIdUsuario();;
     		if(ambito.equals("GRUPO")){
     			an=AmbitoLista.GRUPO;
-    			id=Integer.parseInt(idRequest);
     		}
     		else if (ambito.equals("USUARIO")) {
     			an=AmbitoLista.USUARIO;
-    			id=is.getIdUsuario();
     		}
     		else {
     			HashMap<String,String> res = new HashMap<String,String>();
@@ -225,14 +215,12 @@ public class ListasController {
     			return new ResponseEntity<HashMap<String,String>>(HttpStatus.FORBIDDEN);
     		}
     		AmbitoLista an;
-    		int id;
+    		int id=is.getIdUsuario();;
     		if(ambito.equals("GRUPO")){
     			an=AmbitoLista.GRUPO;
-    			id=Integer.parseInt(idRequest);
     		}
     		else if (ambito.equals("USUARIO")) {
     			an=AmbitoLista.USUARIO;
-    			id=is.getIdUsuario();
     		}
     		else {
     			HashMap<String,String> res = new HashMap<String,String>();
@@ -270,14 +258,12 @@ public class ListasController {
     			return new ResponseEntity<HashMap<String,String>>(HttpStatus.FORBIDDEN);
     		}
     		AmbitoLista an;
-    		int id;
+    		int id=is.getIdUsuario();;
     		if(ambito.equals("GRUPO")){
     			an=AmbitoLista.GRUPO;
-    			id=Integer.parseInt(idRequest);
     		}
     		else if (ambito.equals("USUARIO")) {
     			an=AmbitoLista.USUARIO;
-    			id=is.getIdUsuario();
     		}
     		else {
     			HashMap<String,String> res = new HashMap<String,String>();
@@ -335,9 +321,6 @@ public class ListasController {
     public ResponseEntity<ArrayList<Lista>> listasGrupo(@PathVariable String idGrupo, @RequestHeader String token) {
     		InfoSesion is=TokenUtils.validarToken(token);
     		if(is==null) return new ResponseEntity<ArrayList<Lista>>(HttpStatus.UNAUTHORIZED);
-    		if(!ListaDAO.esPropietarioLista(is.getIdUsuario(),Integer.parseInt(idGrupo),AmbitoLista.USUARIO)){
-    			return new ResponseEntity<ArrayList<Lista>>(HttpStatus.FORBIDDEN);
-    		}
     		ArrayList<Lista> lista= ListaDAO.getListasGrupo(Integer.parseInt(idGrupo));
     		return new ResponseEntity<ArrayList<Lista>>(lista, HttpStatus.OK);
     }
@@ -349,18 +332,15 @@ public class ListasController {
     		JsonParser jp = JsonParserFactory.getJsonParser();
     		Map<String, Object> resultado = jp.parseMap(data);
     		int compartida=Integer.parseInt((String) resultado.get("compartida"));
-    		int idRequest=Integer.parseInt((String) resultado.get("id"));
     		int idLista=Integer.parseInt((String) resultado.get("idLista"));
     		String ambito=((String) resultado.get("ambito")).toUpperCase();
     		AmbitoLista an;
-    		int id;
+    		int id=is.getIdUsuario();;
     		if(ambito.equals("GRUPO")){
     			an=AmbitoLista.GRUPO;
-    			id=idRequest;
     		}
     		else if (ambito.equals("USUARIO")) {
     			an=AmbitoLista.USUARIO;
-    			id=is.getIdUsuario();
     		}
     		else {
     			HashMap<String,String> res = new HashMap<String,String>();
@@ -390,18 +370,15 @@ public class ListasController {
     		if(is==null) return new ResponseEntity<HashMap<String,String>>(HttpStatus.UNAUTHORIZED);
     		JsonParser jp = JsonParserFactory.getJsonParser();
     		Map<String, Object> resultado = jp.parseMap(data);
-    		int idRequest=Integer.parseInt((String) resultado.get("id"));
     		int idLista=Integer.parseInt((String) resultado.get("idLista"));
     		String ambito=((String) resultado.get("ambito")).toUpperCase();
     		AmbitoLista an;
-    		int id;
+    		int id=is.getIdUsuario();;
     		if(ambito.equals("GRUPO")){
     			an=AmbitoLista.GRUPO;
-    			id=idRequest;
     		}
     		else if (ambito.equals("USUARIO")) {
     			an=AmbitoLista.USUARIO;
-    			id=is.getIdUsuario();
     		}
     		else {
     			HashMap<String,String> res = new HashMap<String,String>();

@@ -52,7 +52,7 @@ public class TokenUtils {
 			return null;
 		}
 		catch(ExpiredJwtException e){
-			logger.error("Error: token expirado",e);
+			logger.info("Error: token expirado",e);
 			return null;
 		}
 		catch(Exception e) {
