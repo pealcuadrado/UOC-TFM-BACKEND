@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.listoplan.dao.GrupoDAO;
@@ -333,14 +334,17 @@ public class ListasController {
     		Map<String, Object> resultado = jp.parseMap(data);
     		int compartida=Integer.parseInt((String) resultado.get("compartida"));
     		int idLista=Integer.parseInt((String) resultado.get("idLista"));
+    		int idRequest=Integer.parseInt((String) resultado.get("id"));
     		String ambito=((String) resultado.get("ambito")).toUpperCase();
     		AmbitoLista an;
-    		int id=is.getIdUsuario();;
+    		int id;
     		if(ambito.equals("GRUPO")){
     			an=AmbitoLista.GRUPO;
+    			id=idRequest;
     		}
     		else if (ambito.equals("USUARIO")) {
     			an=AmbitoLista.USUARIO;
+    			id=is.getIdUsuario();
     		}
     		else {
     			HashMap<String,String> res = new HashMap<String,String>();
@@ -371,23 +375,23 @@ public class ListasController {
     		JsonParser jp = JsonParserFactory.getJsonParser();
     		Map<String, Object> resultado = jp.parseMap(data);
     		int idLista=Integer.parseInt((String) resultado.get("idLista"));
+    		int idRequest=Integer.parseInt((String) resultado.get("id"));
     		String ambito=((String) resultado.get("ambito")).toUpperCase();
     		AmbitoLista an;
-    		int id=is.getIdUsuario();;
+    		int id;
     		if(ambito.equals("GRUPO")){
     			an=AmbitoLista.GRUPO;
+    			id=idRequest;
     		}
     		else if (ambito.equals("USUARIO")) {
     			an=AmbitoLista.USUARIO;
+    			id=is.getIdUsuario();
     		}
     		else {
     			HashMap<String,String> res = new HashMap<String,String>();
     			res.put("status","Ámbito no válido, debe ser USUARIO o GRUPO");
     			res.put("resultado","KO");
     			return new ResponseEntity<HashMap<String,String>>(res,HttpStatus.BAD_REQUEST);
-    		}
-    		if(!ListaDAO.esPropietarioLista(id,idLista,an)){
-    			return new ResponseEntity<HashMap<String,String>>(HttpStatus.FORBIDDEN);
     		}
     		if(!ListaDAO.esListaCompartida(idLista)){
     			return new ResponseEntity<HashMap<String,String>>(HttpStatus.FORBIDDEN);
@@ -403,5 +407,13 @@ public class ListasController {
     			respuesta.put("resultado", "OK");
     			return new ResponseEntity<HashMap<String,String>>(respuesta, HttpStatus.OK);
     		}
+    }
+    
+    @RequestMapping(value="/listas/listas_compartidas", method= RequestMethod.GET)
+    public ResponseEntity<ArrayList<Lista>> listasCompartidas(@RequestHeader String token, @RequestParam String filtro) {
+    		InfoSesion is=TokenUtils.validarToken(token);
+    		if(is==null) return new ResponseEntity<ArrayList<Lista>>(HttpStatus.UNAUTHORIZED);
+    		ArrayList<Lista> lista= ListaDAO.getListasCompartidas(filtro);
+    		return new ResponseEntity<ArrayList<Lista>>(lista, HttpStatus.OK);
     }
 }

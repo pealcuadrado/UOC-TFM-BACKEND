@@ -3,6 +3,7 @@ package com.listoplan.dao;
 import java.sql.Date;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.sql.Time;
 import java.util.ArrayList;
 
@@ -312,6 +313,54 @@ public class ListaDAO {
 			logger.error("Error: ",e);
 			return false;
 		}
+	}
+	
+	public static ArrayList<Lista> getListasCompartidas(String filtro) {
+		ArrayList<Lista> listas= new ArrayList<Lista>();
+		//No se retorna todo el contenido de la nota, solo los primeros 20 carácteres
+		String sql=String.format("select ID_LISTA, NOMBRE, DESCRIPCION, " + 
+				"fecha_modificacion, compartida, tl.TIPO_LISTA  " + 
+				"from listas l " + 
+				"join tm_tipo_lista tl on tl.id_tipo_lista= l.fk_id_tipo " + 
+				"WHERE activo=1  " + 
+				"and compartida=1 " + 
+				"and (nombre like '%%%s%%' OR descripcion like '%%%s%%') " + 
+				"order by FECHA_MODIFICACION desc;",filtro,filtro);
+		String sqlItems;
+		try {
+			ResultSet rs = MysqlManager.getInstance().query(sql);
+			while(rs.next()) {
+				int idLista=rs.getInt("id_lista");
+				String nombre=rs.getString("nombre");
+				String descripcion=rs.getString("descripcion");
+				Date fecha=rs.getDate("fecha_modificacion");
+				Time hora=rs.getTime("fecha_modificacion");
+				int compartida=rs.getInt("Compartida");
+				String tipoLista=rs.getString("tipo_lista");
+				Lista lista= new Lista(idLista, nombre, descripcion, tipoLista,fecha, hora,null, compartida);
+				listas.add(lista);
+			} 
+			for (Lista l : listas) {
+				sqlItems=String.format("SELECT id_item, nombre_item, valor_item, orden FROM listoplan.lista_item " + 
+						"where fk_id_lista=%s " + 
+						"order by orden asc;",l.getIdLista());
+						ArrayList <ItemLista> items = new ArrayList<ItemLista>();
+						rs = MysqlManager.getInstance().query(sqlItems);
+						while(rs.next()) {
+							int idItem=rs.getInt("id_item");
+							String nombreItem=rs.getString("nombre_item");
+							String valor=rs.getString("valor_item");
+							int orden=rs.getInt("orden");
+							ItemLista item= new ItemLista(idItem, nombreItem, valor, orden);
+							items.add(item);
+						}
+						l.setItems(items);
+			}
+		} catch (SQLException e) {
+			logger.error("Error: ",e);
+			return null;
+		}
+		return listas;
 	}
 	
 }
