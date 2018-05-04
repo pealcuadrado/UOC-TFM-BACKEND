@@ -132,7 +132,7 @@ public class ListaDAO {
 	
 	public static String modificarItem(int idItem, int idLista, String nombre, String valor, int orden) {
 		String status;
-		String sql=String.format("CALL listas_modificar_item('%s','%s','%s','%s','%s');",idItem, idLista,nombre,valor,orden);
+		String sql=String.format("CALL listas_modificar_item('%s','%s','%s');",idItem, idLista,valor);
 		try {
 			MysqlManager.getInstance().execute(sql);
 			status="El item se ha modificado correctamente";
