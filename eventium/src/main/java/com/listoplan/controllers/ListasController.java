@@ -44,11 +44,13 @@ public class ListasController {
     		}
     		AmbitoLista an;
     		TipoLista tl;
-    		int id=is.getIdUsuario();;
+    		int id;
     		if(ambito.equals("GRUPO")){
+    			id=Integer.parseInt(idRequest);
     			an=AmbitoLista.GRUPO;
     		}
     		else if (ambito.equals("USUARIO")) {
+    			id=is.getIdUsuario();
     			an=AmbitoLista.USUARIO;
     		}
     		else {
@@ -337,14 +339,14 @@ public class ListasController {
     		int idRequest=Integer.parseInt((String) resultado.get("id"));
     		String ambito=((String) resultado.get("ambito")).toUpperCase();
     		AmbitoLista an;
-    		int id;
+    		int id=is.getIdUsuario();
     		if(ambito.equals("GRUPO")){
     			an=AmbitoLista.GRUPO;
-    			id=idRequest;
+    			
     		}
     		else if (ambito.equals("USUARIO")) {
     			an=AmbitoLista.USUARIO;
-    			id=is.getIdUsuario();
+    			
     		}
     		else {
     			HashMap<String,String> res = new HashMap<String,String>();
